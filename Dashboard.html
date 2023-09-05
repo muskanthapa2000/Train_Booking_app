@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Page</title>
+</head>
+<body>
+    <h1>Dashboard Page</h1>
+
+    <label for="filterSeat">Filter by Seat Type:</label>
+    <select id="filterSeat">
+        <option value="">All</option>
+        <option value="AC First Class">AC First Class</option>
+        <option value="Sleeper Class">Sleeper Class</option>
+        <option value="Second Class">Second Class</option>
+        <option value="General">General</option>
+    </select>
+
+    <label for="sortAge">Sort by Age:</label>
+    <select id="sortAge">
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+    </select>
+
+    <label for="sortDate">Sort by Journey Date:</label>
+    <select id="sortDate">
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+    </select>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Unique Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Selected Station</th>
+                <th>To Station</th>
+                <th>Journey Date</th>
+                <th>Seat Type</th>
+                <th>OTP</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody"></tbody>
+    </table>
+
+    <script>
+        // Initialize the user data
+        const userData = JSON.parse(localStorage.getItem("ticket")) || [];
+
+        // Add event listeners for filter and sort elements
+        document.getElementById("filterSeat").addEventListener("change", updateTable);
+        document.getElementById("sortAge").addEventListener("change", updateTable);
+        document.getElementById("sortDate").addEventListener("change", updateTable);
+
+        // Initial display of users
+        updateTable();
+
+        // Function to update the displayed table based on filter and sort selections
+        function updateTable() {
+            const selectedSeat = document.getElementById("filterSeat").value;
+            const sortOrderAge = document.getElementById("sortAge").value;
+            const sortOrderDate = document.getElementById("sortDate").value;
+
+            let filteredUsers = userData;
+
+            // Filter by seat type
+            if (selectedSeat !== "") {
+                filteredUsers = filteredUsers.filter(user => user.Seat === selectedSeat);
+            }
+
+            // Sort by age
+            if (sortOrderAge === "asc") {
+                filteredUsers.sort((a, b) => a.age - b.age);
+            } else if (sortOrderAge === "desc") {
+                filteredUsers.sort((a, b) => b.age - a.age);
+            }
+
+            // Sort by journey date
+            if (sortOrderDate === "asc") {
+                filteredUsers.sort((a, b) => new Date(a.date) - new Date(b.date));
+            } else if (sortOrderDate === "desc") {
+                filteredUsers.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+
+            // Display the filtered and sorted users
+            displayAllUsers(filteredUsers);
+        }
+
+        // Function to display all users
+        function displayAllUsers(data) {
+            document.getElementById("userTableBody").innerHTML = "";
+            data.forEach(user => {
+                const otp = generateOTP();
+                var tr = document.createElement("tr");
+
+                var td1 = document.createElement("td");
+                td1.textContent = user.id;
+
+                var td2 = document.createElement("td");
+                td2.textContent = user.name;
+
+                var td3 = document.createElement("td");
+                td3.textContent = user.age;
+
+                var td4 = document.createElement("td");
+                td4.textContent = user.select_station;
+
+                var td5 = document.createElement("td");
+                td5.textContent = user.to_station;
+
+                var td6 = document.createElement("td");
+                td6.textContent = user.date;
+
+                var td7 = document.createElement("td");
+                td7.textContent = user.Seat;
+
+                var td8 = document.createElement("td");
+                td8.textContent = otp;
+
+                var td9 = document.createElement("td");
+
+                var rejectButton = document.createElement("button");
+                rejectButton.textContent = "Reject";
+                rejectButton.addEventListener("click", function() {
+                    rejectUser(user.id);
+                });
+                td9.append(rejectButton);
+
+                var td10 = document.createElement("td");
+
+                var confirmButton = document.createElement("button");
+                confirmButton.textContent = "Confirm";
+                confirmButton.addEventListener("click", function() {
+                    confirmUser(user.id, otp);
+                });
+                td10.append(confirmButton);
+
+                tr.append(td1, td2, td3, td4, td5, td6, td7, td8, td9, td10);
+                document.querySelector("#userTableBody").append(tr);
+            });
+        }
+
+        // Function to generate a random 4-digit OTP
+        function generateOTP() {
+            return Math.floor(1000 + Math.random() * 9000);
+        }
+
+        // Function to reject and remove a user
+        function rejectUser(id) {
+            const userIndex = userData.findIndex(user => user.id === id);
+
+            if (userIndex !== -1) {
+                userData.splice(userIndex, 1);
+                localStorage.setItem("ticket", JSON.stringify(userData));
+                updateTable();
+            }
+        }
+
+        // Function to confirm a user and show alerts
+        function confirmUser(id, otp) {
+            const userInputOTP = prompt("Enter the OTP received on your mobile:");
+
+            if (userInputOTP === otp.toString()) {
+                alert(`${userData.find(user => user.id === id).name} added to waiting list`);
+                setTimeout(() => {
+                    alert(`Booking ticket from ${userData.find(user => user.id === id).select_station} to ${userData.find(user => user.id === id).to_station}`);
+                }, 5000);
+                setTimeout(() => {
+                    alert(`Ticket booked for ${userData.find(user => user.id === id).date}`);
+                    const rowToRemove = document.querySelector(`[data-id="${id}"]`);
+                    rowToRemove.remove();
+                    localStorage.setItem(`confirmed-ticket-${id}`, JSON.stringify(userData.find(user => user.id === id)));
+                }, 10000);
+                // After confirming a user, store their data in "confirmed-ticket" key
+                localStorage.setItem(`confirmed-ticket-${id}`, JSON.stringify(userData.find(user => user.id === id)));
+
+                window.location.href = "Booking.html";
+            } else {
+                alert("Invalid OTP. Please try again.");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+</head>
+<body>
+    <h1>Registration Page</h1>
+    <form id="registrationform">
+        <label for="uniqueId">Unique ID:</label>
+        <input type="text" id="uniqueId" required><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" minlength="4" required><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" min="18" max="40" id="age" required><br><br>
+
+        <label for="selectstation">Select Station:</label>
+        <select id="selectstation">
+            <option value="Banglore">Banglore</option>
+            <option value="Pune">Pune</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Mumbai">Mumbai</option>
+        </select>
+
+        <label for="tostation">To Station:</label>
+        <select id="tostation">
+            <option value="Banglore">Banglore</option>
+            <option value="Pune">Pune</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Mumbai">Mumbai</option>
+        </select><br><br>
+
+        <label for="date">Journey Date:</label>
+        <input type="date" id="date" required><br><br>
+
+        <label for="Seat">Seat Type:</label>
+        <select id="Seat">
+            <option value="AC First Class">AC First Class</option>
+            <option value="Sleeper Class">Sleeper Class</option>
+            <option value="Second Class">Second Class</option>
+            <option value="General">General</option>
+        </select><br><br>
+
+        <button id="button">Register</button>
+    </form>
+    <script>
+        document.getElementById("registrationform").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var arr = JSON.parse(localStorage.getItem("ticket")) || [];
+            const id = document.getElementById("uniqueId").value;
+            const name = document.getElementById("name").value;
+            const age = document.getElementById("age").value;
+            const select_station = document.getElementById("selectstation").value;
+            const to_station = document.getElementById("tostation").value;
+            const date = document.getElementById("date").value;
+            const Seat = document.getElementById("Seat").value;
+
+            console.log(name);
+
+            if (select_station === to_station) {
+                alert("From and To stations cannot be the same.");
+                return;
+            }
+
+            let isUniqueIdTaken = arr.some(user => user.id === id);
+
+            if (isUniqueIdTaken) {
+                alert("ID already exists");
+                return;
+            } else {
+                const userData = { id, name, age, select_station, to_station, date, Seat };
+                arr.push(userData);
+                console.log(userData);
+
+                localStorage.setItem("ticket", JSON.stringify(arr));
+                window.location.href = "dashboard.html";
+            }
+        });
+    </script>
+</body>
+</html>
