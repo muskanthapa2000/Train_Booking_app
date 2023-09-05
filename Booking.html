@@ -4,30 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            margin: 0;
+            width: 100%;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            padding: 5px;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
     <h1>Booking Page</h1>
 
-    <label for="filterSeat">Filter by Seat Type:</label>
-    <select id="filterSeat">
-        <option value="">All</option>
-        <option value="AC First Class">AC First Class</option>
-        <option value="Sleeper Class">Sleeper Class</option>
-        <option value="Second Class">Second Class</option>
-        <option value="General">General</option>
-    </select>
+    <div class="filters">
+        <label for="filterSeat">Filter by Seat Type:</label>
+        <select id="filterSeat">
+            <option value="">All</option>
+            <option value="AC First Class">AC First Class</option>
+            <option value="Sleeper Class">Sleeper Class</option>
+            <option value="Second Class">Second Class</option>
+            <option value="General">General</option>
+        </select>
 
-    <label for="sortAge">Sort by Age:</label>
-    <select id="sortAge">
-        <option value="asc">Ascending</option>
-        <option value="desc">Descending</option>
-    </select>
+        <label for="sortAge">Sort by Age:</label>
+        <select id="sortAge">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
 
-    <label for="sortDate">Sort by Journey Date:</label>
-    <select id="sortDate">
-        <option value="asc">Ascending</option>
-        <option value="desc">Descending</option>
-    </select>
+        <label for="sortDate">Sort by Journey Date:</label>
+        <select id="sortDate">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+    </div>
 
     <table>
         <thead>

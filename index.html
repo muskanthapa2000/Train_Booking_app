@@ -4,50 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            /* justify-content: center; */
+            flex-direction: column;
+            align-items: center;
+            /* height: 100vh; */
+            text-align: center;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 90px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 700px;
+        }
+
+        h1 {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            margin: 0;
+            width: 100%;
+        }
+        select {
+            padding: 5px;
+        }
+
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        /* select, */
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* select {
+            height: 40px;
+        } */
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 20px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Registration Page</h1>
-    <form id="registrationform">
-        <label for="uniqueId">Unique ID:</label>
-        <input type="text" id="uniqueId" required><br><br>
+    <div class="container">
+  
+        <form id="registrationform">
+            <label for="uniqueId">Unique ID:</label>
+            <input type="text" id="uniqueId" required>
 
-        <label for="name">Name:</label>
-        <input type="text" id="name" minlength="4" required><br><br>
+            <label for="name">Name:</label>
+            <input type="text" id="name" minlength="4" required>
 
-        <label for="age">Age:</label>
-        <input type="number" min="18" max="40" id="age" required><br><br>
+            <label for="age">Age:</label>
+            <input type="number" min="18" max="40" id="age" required>
 
-        <label for="selectstation">Select Station:</label>
-        <select id="selectstation">
-            <option value="Banglore">Banglore</option>
-            <option value="Pune">Pune</option>
-            <option value="Hyderabad">Hyderabad</option>
-            <option value="Delhi">Delhi</option>
-            <option value="Mumbai">Mumbai</option>
-        </select>
+            <label for="selectstation">Select Station:</label>
+            <select id="selectstation">
+                <option value="Banglore">Banglore</option>
+                <option value="Pune">Pune</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Mumbai">Mumbai</option>
+            </select>
 
-        <label for="tostation">To Station:</label>
-        <select id="tostation">
-            <option value="Banglore">Banglore</option>
-            <option value="Pune">Pune</option>
-            <option value="Hyderabad">Hyderabad</option>
-            <option value="Delhi">Delhi</option>
-            <option value="Mumbai">Mumbai</option>
-        </select><br><br>
+            <label for="tostation">To Station:</label>
+            <select id="tostation">
+                <option value="Banglore">Banglore</option>
+                <option value="Pune">Pune</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Mumbai">Mumbai</option>
+            </select><br><br>
 
-        <label for="date">Journey Date:</label>
-        <input type="date" id="date" required><br><br>
+            <label for="date">Journey Date:</label>
+            <input type="date" id="date" required>
 
-        <label for="Seat">Seat Type:</label>
-        <select id="Seat">
-            <option value="AC First Class">AC First Class</option>
-            <option value="Sleeper Class">Sleeper Class</option>
-            <option value="Second Class">Second Class</option>
-            <option value="General">General</option>
-        </select><br><br>
+            <label for="Seat">Seat Type:</label>
+            <select id="Seat">
+                <option value="AC First Class">AC First Class</option>
+                <option value="Sleeper Class">Sleeper Class</option>
+                <option value="Second Class">Second Class</option>
+                <option value="General">General</option>
+            </select>
 
-        <button id="button">Register</button>
-    </form>
+            <button id="button">Register</button>
+        </form>
+    </div>
     <script>
         document.getElementById("registrationform").addEventListener("submit", function(event) {
             event.preventDefault();
@@ -60,8 +132,6 @@
             const to_station = document.getElementById("tostation").value;
             const date = document.getElementById("date").value;
             const Seat = document.getElementById("Seat").value;
-
-            console.log(name);
 
             if (select_station === to_station) {
                 alert("From and To stations cannot be the same.");
@@ -76,8 +146,6 @@
             } else {
                 const userData = { id, name, age, select_station, to_station, date, Seat };
                 arr.push(userData);
-                console.log(userData);
-
                 localStorage.setItem("ticket", JSON.stringify(arr));
                 window.location.href = "dashboard.html";
             }
