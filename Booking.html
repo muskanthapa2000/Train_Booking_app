@@ -15,6 +15,29 @@
             align-items: center;
             text-align: center;
         }
+        header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 0;
+            width: 100%;
+            }
+
+            /* Navigation menu styles */
+            #nav {
+            text-align: center;
+            }
+
+            #nav a {
+            text-decoration: none;
+            color: #fff;
+            margin: 0 20px;
+            font-size: 18px;
+            transition: color 0.3s;
+            }
+
+            #nav a:hover {
+            color: #0056b3; /* Change color on hover */
+            }
 
         h1 {
             background-color: #007BFF;
@@ -63,6 +86,13 @@
     </style>
 </head>
 <body>
+    <header>
+        <nav id = "nav">
+            <a href="index.html">Home</a>
+            <a href="Dashboard.html">Dashboard</a>
+            <a href="Booking.html">Booking</a>
+        </nav>
+    </header>
     <h1>Booking Page</h1>
 
     <div class="filters">
@@ -110,7 +140,7 @@
             if (key.startsWith("confirmed-ticket-")) {
                 const user = JSON.parse(localStorage.getItem(key));
                 bookedUserData.push(user);
-            }
+          }  
         }
 
         // Add event listeners for filter and sort elements
@@ -135,11 +165,11 @@
             }
 
             // Sort by age
-            if (sortOrderAge === "asc") {
-                filteredUsers.sort((a, b) => a.age - b.age);
-            } else if (sortOrderAge === "desc") {
-                filteredUsers.sort((a, b) => b.age - a.age);
-            }
+                    if (sortOrderAge === "asc") {
+            filteredUsers.sort((a, b) => a.age - b.age);
+        } else if (sortOrderAge === "desc") {
+            filteredUsers.sort((a, b) => b.age - a.age);
+        }
 
             // Sort by journey date
             if (sortOrderDate === "asc") {

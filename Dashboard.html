@@ -101,9 +101,43 @@
         .actions button {
             width: auto;
         }
+       /* Header styles */
+header {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 10px 0;
+}
+
+/* Navigation menu styles */
+nav {
+  background-color: #007BFF;
+  padding: 10px 0;
+  width:  3000px;
+  height: 5%;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+  margin: 0 20px;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #0056b3; /* Change color on hover */
+}
+
     </style>
 </head>
 <body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="Dashboard.html">Dashboard</a>
+            <a href="Booking.html">Booking </a>
+        </nav>
+    </header>
     <h1>Dashboard Page</h1>
     <div class="container">
      
@@ -122,6 +156,7 @@
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
         </select>
+        
 
         <label for="sortDate">Sort by Journey Date:</label>
         <select id="sortDate">
@@ -173,11 +208,20 @@
             }
 
             // Sort by age
-            if (sortOrderAge === "asc") {
-                filteredUsers.sort((a, b) => a.age - b.age);
-            } else if (sortOrderAge === "desc") {
-                filteredUsers.sort((a, b) => b.age - a.age);
-            }
+            // if (sortOrderAge === "asc") {
+            //     filteredUsers.sort((a, b) => a.age - b.age);
+            // } else if (sortOrderAge === "desc") {
+            //     filteredUsers.sort((a, b) => b.age - a.age);
+            // }
+             // Sort by age
+              // Sort by age
+          // Sort by age
+                if (sortOrderAge === "asc") {
+                    filteredUsers.sort((a, b) => parseInt(a.age) - parseInt(b.age));
+                } else if (sortOrderAge === "desc") {
+                    filteredUsers.sort((a, b) => parseInt(b.age) - parseInt(a.age));
+                }
+                console.log(filteredUsers);
 
             // Sort by journey date
             if (sortOrderDate === "asc") {
@@ -189,6 +233,8 @@
             // Display the filtered and sorted users
             displayAllUsers(filteredUsers);
         }
+
+        // console.log(userData);
 
         // Function to display all users
         function displayAllUsers(data) {
@@ -222,7 +268,6 @@
                 td8.textContent = otp;
 
                 var td9 = document.createElement("td");
-
                 var rejectButton = document.createElement("button");
                 rejectButton.textContent = "Reject";
                 rejectButton.addEventListener("click", function() {
@@ -230,8 +275,8 @@
                 });
                 td9.append(rejectButton);
 
-                var td10 = document.createElement("td");
 
+                var td10 = document.createElement("td");
                 var confirmButton = document.createElement("button");
                 confirmButton.textContent = "Confirm";
                 confirmButton.addEventListener("click", function() {
@@ -265,20 +310,23 @@
             const userInputOTP = prompt("Enter the OTP received on your mobile:");
 
             if (userInputOTP === otp.toString()) {
-                alert(`${userData.find(user => user.id === id).name} added to waiting list`);
-                setTimeout(() => {
-                    alert(`Booking ticket from ${userData.find(user => user.id === id).select_station} to ${userData.find(user => user.id === id).to_station}`);
-                }, 5000);
-                setTimeout(() => {
-                    alert(`Ticket booked for ${userData.find(user => user.id === id).date}`);
-                    const rowToRemove = document.querySelector(`[data-id="${id}"]`);
-                    rowToRemove.remove();
-                    localStorage.setItem(`confirmed-ticket-${id}`, JSON.stringify(userData.find(user => user.id === id)));
-                }, 10000);
-                // After confirming a user, store their data in "confirmed-ticket" key
-                localStorage.setItem(`confirmed-ticket-${id}`, JSON.stringify(userData.find(user => user.id === id)));
-
-                window.location.href = "Booking.html";
+                const userToConfirm = userData.find(user => user.id === id);
+                if (userToConfirm) {
+                    alert(`${userToConfirm.name} added to waiting list`);
+                    setTimeout(() => {
+                        alert(`Booking ticket from ${userToConfirm.select_station} to ${userToConfirm.to_station}`);
+                    }, 1000);
+                    setTimeout(() => {
+                        alert(`Ticket booked for ${userToConfirm.date}`);
+                        // Store the confirmed user data with a unique key
+                        localStorage.setItem(`confirmed-ticket-${id}`, JSON.stringify(userToConfirm));
+                        // Remove the user from userData
+                        rejectUser(id);
+                        // window.location.href("booking.html")
+                    }, 2000);
+                } else {
+                    alert("User not found.");
+                }
             } else {
                 alert("Invalid OTP. Please try again.");
             }
